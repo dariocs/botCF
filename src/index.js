@@ -2,7 +2,7 @@ const readline = require("node:readline/promises");
 const { stdin: input, stdout: output } = require("node:process");
 const CodiceFiscale = require("codice-fiscale-js");
 
-const MCP_URL = process.env.REMOTE_MCP_URL || "http://as400.it:3010/mcp";
+const MCP_URL = process.env.REMOTE_MCP_URL || "http://192.168.248.2:3010/mcp";
 
 function sanitizeText(value) {
   return String(value || "")
@@ -566,8 +566,8 @@ async function runChatbot() {
       cognome,
       nome,
       sesso,
-      data_nascita,
-      comune_nasc: comuneResult.code,
+      dataNascita: data_nascita,
+      comuneNasc: comuneResult.code,
     });
 
     output.write("\nRisultato:\n");

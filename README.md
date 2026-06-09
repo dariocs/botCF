@@ -6,16 +6,54 @@ Chatbot CLI in Node.js che raccoglie i dati dall'utente e invoca il tool MCP `ca
 
 - Node.js 18+
 
-Opzionale:
+## Endpoint MCP
 
-- `REMOTE_MCP_URL` per cambiare endpoint (default: `http://as400.it:3010/mcp`)
+- Predefinito: `http://192.168.248.2:3010/mcp`
+- Puoi sovrascriverlo impostando la variabile d'ambiente `REMOTE_MCP_URL` prima dell'avvio.
 
 ## Avvio
 
+Avvia il chatbot dalla cartella del progetto:
+
 ```powershell
 cd c:\botCF
-$env:REMOTE_MCP_URL="http://as400.it:3010/mcp" 
 npm start
+```
+
+Per avviare temporaneamente con un endpoint diverso (PowerShell):
+
+```powershell
+$env:REMOTE_MCP_URL="http://altro-host:3010/mcp"; npm start
+```
+
+## Parametri MCP
+
+Il tool MCP `calc_codice_fiscale` si aspetta i parametri in camelCase:
+
+- `cognome` (string)
+- `nome` (string)
+- `sesso` (string, `M` o `F`)
+- `dataNascita` (number, formato YYYYMMDD)
+- `comuneNasc` (string, codice Belfiore, es. `F205`)
+
+Esempio JSON-RPC `tools/call`:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 123,
+  "method": "tools/call",
+  "params": {
+    "name": "calc_codice_fiscale",
+    "arguments": {
+      "cognome": "ROSSI",
+      "nome": "MARIO",
+      "sesso": "M",
+      "dataNascita": 19800110,
+      "comuneNasc": "F205"
+    }
+  }
+}
 ```
 
 ## Comportamento

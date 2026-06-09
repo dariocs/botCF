@@ -21,17 +21,7 @@ if not exist "node_modules" (
   )
 )
 
-if "%REMOTE_MCP_URL%"=="" (
-  echo.
-  echo Variabile d'ambiente REMOTE_MCP_URL non impostata.
-  set /p REMOTE_MCP_URL=Inserisci endpoint MCP ^(esempio: http://localhost:3010/mcp^): 
-)
 
-if "%REMOTE_MCP_URL%"=="" (
-  echo [ERRORE] Endpoint MCP non fornito. Avvio annullato.
-  pause
-  exit /b 1
-)
 
 echo Avvio chatbot...
 call npm start
