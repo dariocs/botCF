@@ -1,0 +1,44 @@
+sources:
+  ibmi-system:
+    host: ${DB2i_HOST}
+    user: ${DB2i_USER}
+    password: ${DB2i_PASS}
+    port: 8076
+    ignore-unauthorized: true
+
+tools:
+  calc_codice_fiscale:
+    source: ibmi-system
+    description: "Calcola il codice fiscale chiamando la SQL function wrapper nel service program CDFIS"
+    readOnlyHint: true
+    parameters:
+      - name: cognome
+        type: string
+        description: "Cognome (fino a 30 caratteri)"
+      - name: nome
+        type: string
+        description: "Nome (fino a 30 caratteri)"
+      - name: sesso
+        type: string
+        description: "Sesso: 'M' o 'F'"
+      - name: dataNascita
+        type: integer
+        description: "Data di nascita in formato YYYYMMDD"
+      - name: comuneNasc
+        type: string
+        description: "Codice catastale del comune di nascita (4 caratteri)"
+    statement: |
+      SELECT DCARNEVALE.CDFIS_SQL_CalcCodiceFiscale(
+        :cognome,
+        :nome,
+        :sesso,
+        :dataNascita,
+        :comuneNasc
+      ) AS CODICEFISCALE
+      FROM SYSIBM.SYSDUMMY1;
+
+toolsets:
+  CodiceFiscale:
+    tools:
+      - calc_codice_fiscale
+
