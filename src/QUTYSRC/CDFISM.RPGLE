@@ -1,9 +1,14 @@
 **free
-ctl-opt NoMain bnddir('CBXUTY');
+ctl-opt nomain bnddir('UTY');
 
+ /include qutysrc,cdfish
 
-
-
+ // §STR§
+ // AUTHOR: GitHub Copilot
+ // TYPE: Service Program Module
+ // CATEGORY: Codice Fiscale
+ // DESCRIPTION: Verifica il codice fiscale italiano per persona fisica.
+ // §END§
 
 // Tabelle per il calcolo del carattere di controllo
 Dcl-C VOCALIG 'AEIOU';
@@ -20,7 +25,7 @@ Dcl-C CARATTERI_CONTROLLO 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 //----------------------------------------------------------------------
 // Calcola il codice fiscale completo
 //----------------------------------------------------------------------
-Dcl-Proc DARIO_CalcCodiceFiscale Export;
+Dcl-Proc CDFIS_CalcCodiceFiscale Export;
   Dcl-Pi *N Char(16);
     cognome     Char(30) Const;
     nome        Char(30) Const;
@@ -35,7 +40,7 @@ Dcl-Proc DARIO_CalcCodiceFiscale Export;
 
   Monitor;
     // Calcola primi 11 caratteri
-    parteAnagrafica = DARIO_CalcParteAnagrafica(cognome : nome : sesso : dataNascita);
+    parteAnagrafica = CDFIS_CalcParteAnagrafica(cognome : nome : sesso : dataNascita);
     If parteAnagrafica = *Blanks;
       Return *Blanks;
     EndIf;
@@ -44,7 +49,7 @@ Dcl-Proc DARIO_CalcCodiceFiscale Export;
     primi15Char = parteAnagrafica + %Trim(comuneNasc);
 
     // Calcola carattere di controllo
-    carattereControllo = DARIO_CalcCarattereControllo(primi15Char);
+    carattereControllo = CDFIS_CalcCarattereControllo(primi15Char);
     If carattereControllo = *Blank;
       Return *Blanks;
     EndIf;
@@ -60,7 +65,7 @@ End-Proc;
 //----------------------------------------------------------------------
 // Calcola la parte anagrafica (primi 11 caratteri)
 //----------------------------------------------------------------------
-Dcl-Proc DARIO_CalcParteAnagrafica Export;
+Dcl-Proc CDFIS_CalcParteAnagrafica Export;
   Dcl-Pi *N Char(11);
     cognome     Char(30) Const;
     nome        Char(30) Const;
@@ -130,7 +135,7 @@ End-Proc;
 //----------------------------------------------------------------------
 // Calcola il carattere di controllo
 //----------------------------------------------------------------------
-Dcl-Proc DARIO_CalcCarattereControllo Export;
+Dcl-Proc CDFIS_CalcCarattereControllo Export;
   Dcl-Pi *N Char(1);
     primi15Char Char(15) Const;
   End-Pi;
@@ -261,7 +266,7 @@ End-Proc;
 //----------------------------------------------------------------------
 // Valida un codice fiscale
 //----------------------------------------------------------------------
-Dcl-Proc DARIO_ValidaCodiceFiscale Export;
+Dcl-Proc CDFIS_ValidaCodiceFiscale Export;
   Dcl-Pi *N Ind;
     codiceFiscale Char(16) Const;
   End-Pi;
@@ -279,7 +284,7 @@ Dcl-Proc DARIO_ValidaCodiceFiscale Export;
     primi15 = %Subst(codiceFiscale:1:15);
     carattereFornito = %Subst(codiceFiscale:16:1);
 
-    carattereCalcolato = DARIO_CalcCarattereControllo(primi15);
+    carattereCalcolato = CDFIS_CalcCarattereControllo(primi15);
 
     Return (carattereCalcolato = carattereFornito);
 
@@ -333,3 +338,4 @@ Dcl-Proc processaNome;
   Return risultato;
 
 End-Proc;
+
